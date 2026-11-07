@@ -1,0 +1,58 @@
+/* ── Text utilities ── */
+.text-tn-primary { color: var(--tn-primary); }
+.text-tn-muted { color: var(--tn-text-muted); }
+.text-tn-success { color: var(--tn-success); }
+.text-tn-warning { color: var(--tn-warning); }
+.text-tn-danger { color: var(--tn-danger); }
+.text-tn-info { color: var(--tn-info); }
+
+/* ── Background utilities ── */
+.bg-tn-surface { background-color: var(--tn-surface); }
+.bg-tn-elevated { background-color: var(--tn-surface-elevated); }
+.bg-tn-bg { background-color: var(--tn-bg); }
+.bg-tn-hover { background-color: var(--tn-surface-hover); }
+
+/* ── Border utilities ── */
+.border-tn { border-color: var(--tn-border); }
+
+/* ── Content width constraint ── */
+.tn-content {
+    max-width: var(--container-max-width, 1280px);
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+    .tn-content {
+        padding-inline: 1.5rem;
+    }
+}
+
+/* ── Truncation ── */
+.tn-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tn-line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.tn-line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ── Divider ── */
+.tn-divider {
+    height: 1px;
+    background-color: var(--tn-border);
+    border: none;
+    margin: 0;
+}

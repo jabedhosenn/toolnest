@@ -1,0 +1,45 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import './landing.css';
+@import 'tailwindcss';
+@import './design-system/tokens.css';
+@import './design-system/base.css';
+@import './design-system/components.css';
+@import './design-system/utilities.css';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../js/**/*.vue';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Primary */
+    --color-primary: var(--tn-primary);
+    --color-primary-hover: var(--tn-primary-hover);
+    --color-primary-light: var(--tn-primary-light);
+
+    /* Secondary */
+    --color-secondary: var(--tn-secondary);
+
+    /* Surfaces */
+    --color-surface: var(--tn-surface);
+    --color-surface-elevated: var(--tn-surface-elevated);
+    --color-background: var(--tn-bg);
+
+    /* Text */
+    --color-text-primary: var(--tn-text);
+    --color-text-secondary: var(--tn-text-muted);
+
+    /* Border */
+    --color-border: var(--tn-border);
+
+    /* Semantic */
+    --color-success: var(--tn-success);
+    --color-warning: var(--tn-warning);
+    --color-danger: var(--tn-danger);
+    --color-info: var(--tn-info);
+
+    /* Layout */
+    --container-max-width: 1280px;
+}

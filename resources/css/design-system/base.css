@@ -1,0 +1,158 @@
+/* ── Base styles ── */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--tn-bg);
+    color: var(--tn-text);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color var(--tn-transition-slow), color var(--tn-transition-slow);
+}
+
+#app {
+    min-height: 100vh;
+}
+
+::selection {
+    background-color: var(--tn-primary);
+    color: var(--tn-primary-foreground);
+}
+
+/* ── Focus styles ── */
+:focus-visible {
+    outline: 2px solid var(--tn-primary);
+    outline-offset: 2px;
+}
+
+/* ── Links ── */
+a {
+    color: var(--tn-primary);
+    text-decoration: none;
+    transition: color var(--tn-transition-fast);
+}
+
+a:hover {
+    color: var(--tn-primary-hover);
+}
+
+/* ── Scrollbar (WebKit) ── */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--tn-border);
+    border-radius: var(--tn-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--tn-secondary);
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--tn-text);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+p {
+    line-height: 1.625;
+    color: var(--tn-text-muted);
+}
+
+/* ── Bootstrap overrides for theme awareness ── */
+.card {
+    background-color: var(--tn-surface);
+    border-color: var(--tn-border);
+    color: var(--tn-text);
+}
+
+.modal-content {
+    background-color: var(--tn-surface);
+    border-color: var(--tn-border);
+    color: var(--tn-text);
+}
+
+.dropdown-menu {
+    background-color: var(--tn-surface);
+    border-color: var(--tn-border);
+    color: var(--tn-text);
+}
+
+.dropdown-item {
+    color: var(--tn-text);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--tn-surface-hover);
+    color: var(--tn-text);
+}
+
+.form-control,
+.form-select {
+    background-color: var(--tn-surface);
+    border-color: var(--tn-border);
+    color: var(--tn-text);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--tn-border-focus);
+    box-shadow: var(--tn-ring);
+}
+
+.form-control::placeholder {
+    color: var(--tn-text-muted);
+    opacity: 0.7;
+}
+
+.table {
+    color: var(--tn-text);
+    border-color: var(--tn-border);
+}
+
+.table th {
+    color: var(--tn-text-muted);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.nav-link {
+    color: var(--tn-text-muted);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--tn-text);
+}
+
+.border-bottom {
+    border-color: var(--tn-border) !important;
+}
+
+/* Override Bootstrap's blue focus ring */
+.btn:focus-visible {
+    box-shadow: var(--tn-ring);
+}
