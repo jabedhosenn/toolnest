@@ -3,12 +3,14 @@ import { ref } from 'vue';
 import TnIcon from '@/components/ui/TnIcon.vue';
 
 const query = defineModel<string>({ default: '' });
+const props = defineProps<{
+    suggestions: string[];
+}>();
 const emit = defineEmits<{
     search: [query: string];
 }>();
 
 const searchInput = ref<HTMLInputElement | null>(null);
-const suggestions = ['Word counter', 'PDF compressor', 'Image converter', 'JSON formatter'];
 
 function submitSearch(): void {
     emit('search', query.value.trim());
@@ -61,7 +63,7 @@ defineExpose({ focusSearch });
                 <div class="popular-searches">
                     <span>Popular:</span>
                     <button
-                        v-for="suggestion in suggestions"
+                        v-for="suggestion in props.suggestions"
                         :key="suggestion"
                         type="button"
                         @click="selectSuggestion(suggestion)"

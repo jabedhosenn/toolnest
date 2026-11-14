@@ -1,55 +1,81 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import BrandLogo from '@/components/landing/BrandLogo.vue';
+import DesktopNavigation from '@/components/DesktopNavigation.vue';
+import MobileNavigation from '@/components/MobileNavigation.vue';
+import ThemeToggle from '@/components/ThemeToggle.vue';
 import TnIcon from '@/components/ui/TnIcon.vue';
-import TnThemeToggle from '@/components/ui/TnThemeToggle.vue';
 
 const emit = defineEmits<{
     search: [];
 }>();
 
+const activeSection = ref('top');
 const mobileMenuOpen = ref(false);
-const categoriesOpen = ref(false);
+const menuButtonRef = ref<HTMLButtonElement | null>(null);
 
-function closeMenus(): void {
-    mobileMenuOpen.value = false;
-    categoriesOpen.value = false;
+const sectionIds = ['top', 'popular-tools', 'categories', 'pricing', 'how-it-works', 'about'];
+
+function updateActiveSection(): void {
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        activeSection.value = 'about';
+        return;
+    }
+
+    let currentSection = 'top';
+
+    for (const sectionId of sectionIds) {
+        const section = document.getElementById(sectionId);
+
+        if (section && section.getBoundingClientRect().top <= 140) {
+            currentSection = sectionId;
+        }
+    }
+
+    activeSection.value = currentSection;
 }
+
+function closeMobileNavigation(restoreFocus = false): void {
+    mobileMenuOpen.value = false;
+
+    if (restoreFocus) {
+        menuButtonRef.value?.focus();
+    }
+}
+
+function handleViewportChange(): void {
+    if (window.innerWidth > 800) {
+        closeMobileNavigation();
+    }
+}
+
+onMounted(() => {
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', updateActiveSection, { passive: true });
+    window.addEventListener('resize', handleViewportChange, { passive: true });
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', updateActiveSection);
+    window.removeEventListener('resize', updateActiveSection);
+    window.removeEventListener('resize', handleViewportChange);
+});
 </script>
 
 <template>
     <header class="site-header">
-        <nav class="site-nav tn-content" aria-label="Main navigation">
-            <RouterLink to="/" class="brand-link" aria-label="ToolNest home" @click="closeMenus">
+        <div class="site-nav tn-content">
+            <RouterLink to="/" class="brand-link" aria-label="ToolNest home">
                 <BrandLogo />
             </RouterLink>
 
-            <div class="desktop-nav">
-                <a class="site-nav-link" href="#top">Home</a>
-                <a class="site-nav-link" href="#popular-tools">All Tools</a>
-                <div class="nav-dropdown">
-                    <button
-                        class="site-nav-link nav-dropdown-trigger"
-                        type="button"
-                        :aria-expanded="categoriesOpen"
-                        @click="categoriesOpen = !categoriesOpen"
-                    >
-                        Categories
-                        <TnIcon name="chevron-down" :size="15" />
-                    </button>
-                    <div v-if="categoriesOpen" class="nav-dropdown-menu">
-                        <a href="#categories" @click="closeMenus">Browse all categories</a>
-                        <a href="#category-text-tools" @click="closeMenus">Text Tools</a>
-                        <a href="#category-pdf-tools" @click="closeMenus">PDF Tools</a>
-                        <a href="#category-image-tools" @click="closeMenus">Image Tools</a>
-                    </div>
-                </div>
-                <a class="site-nav-link" href="#pricing">Pricing</a>
-                <a class="site-nav-link" href="#about">About</a>
-            </div>
+            <DesktopNavigation
+                :active-section="activeSection"
+            />
 
-            <div class="nav-actions">
+            <div class="header-actions">
                 <button
                     class="icon-button nav-search-button"
                     type="button"
@@ -58,7 +84,7 @@ function closeMenus(): void {
                 >
                     <TnIcon name="search" />
                 </button>
-                <TnThemeToggle />
+                <ThemeToggle />
                 <a class="login-link" href="/login">Log in</a>
                 <a class="tn-btn tn-btn-primary get-started-button" href="#popular-tools">
                     Get started
@@ -67,38 +93,23 @@ function closeMenus(): void {
             </div>
 
             <button
+                ref="menuButtonRef"
                 class="icon-button mobile-menu-button"
                 type="button"
-                :aria-label="mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'"
+                aria-controls="mobile-navigation"
                 :aria-expanded="mobileMenuOpen"
+                :aria-label="mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'"
                 @click="mobileMenuOpen = !mobileMenuOpen"
             >
                 <TnIcon :name="mobileMenuOpen ? 'x' : 'menu'" />
             </button>
-        </nav>
-
-        <div v-if="mobileMenuOpen" class="mobile-nav tn-content">
-            <a href="#top" @click="closeMenus">Home</a>
-            <a href="#popular-tools" @click="closeMenus">All Tools</a>
-            <a href="#categories" @click="closeMenus">Categories</a>
-            <a href="#pricing" @click="closeMenus">Pricing</a>
-            <a href="#about" @click="closeMenus">About</a>
-            <div class="mobile-nav-actions">
-                <button
-                    class="icon-button mobile-action-button"
-                    type="button"
-                    aria-label="Search tools"
-                    @click="closeMenus(); emit('search')"
-                >
-                    <TnIcon name="search" />
-                </button>
-                <TnThemeToggle />
-                <a class="tn-btn tn-btn-secondary" href="/login" @click="closeMenus">Log in</a>
-                <a class="tn-btn tn-btn-primary" href="#popular-tools" @click="closeMenus">
-                    Get started
-                    <TnIcon name="arrow-right" :size="16" />
-                </a>
-            </div>
         </div>
+
+        <MobileNavigation
+            :open="mobileMenuOpen"
+            :active-section="activeSection"
+            @close="closeMobileNavigation"
+            @search="emit('search')"
+        />
     </header>
 </template>
