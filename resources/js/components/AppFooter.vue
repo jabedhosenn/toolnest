@@ -1,13 +1,7 @@
 <script setup lang="ts">
+import { toolCategories } from '@/data/toolCategories';
 import BrandLogo from '@/components/landing/BrandLogo.vue';
 import TnIcon from '@/components/ui/TnIcon.vue';
-
-const categoryLinks = [
-    { title: 'Text Tools', href: '#category-text-tools' },
-    { title: 'PDF Tools', href: '#category-pdf-tools' },
-    { title: 'Image Tools', href: '#category-image-tools' },
-    { title: 'Developer Tools', href: '#category-developer-tools' },
-];
 
 const companyLinks = [
     { title: 'About ToolNest', href: '#about' },
@@ -15,7 +9,7 @@ const companyLinks = [
     { title: 'Pricing', href: '#pricing' },
 ];
 
-const helpLinks = [
+const supportLinks = [
     { title: 'Help & support', href: '#how-it-works' },
     { title: 'Privacy policy', href: '/privacy-policy' },
     { title: 'Terms of service', href: '/terms-of-service' },
@@ -38,21 +32,30 @@ const helpLinks = [
 
                 <div class="footer-link-column">
                     <h2>Explore</h2>
-                    <a v-for="link in categoryLinks" :key="link.title" :href="link.href">
-                        {{ link.title }}
+                    <a
+                        v-for="category in toolCategories"
+                        :key="category.id"
+                        :href="`#category-${category.id}`"
+                    >
+                        {{ category.title }}
                     </a>
                 </div>
 
-                <div id="pricing" class="footer-link-column">
+                <div class="footer-link-column">
                     <h2>Company</h2>
-                    <a v-for="link in companyLinks" :key="link.title" :href="link.href">
+                    <a
+                        v-for="link in companyLinks"
+                        :key="link.title"
+                        :id="link.title === 'Pricing' ? 'pricing' : undefined"
+                        :href="link.href"
+                    >
                         {{ link.title }}
                     </a>
                 </div>
 
                 <div class="footer-link-column">
                     <h2>Help &amp; legal</h2>
-                    <a v-for="link in helpLinks" :key="link.title" :href="link.href">
+                    <a v-for="link in supportLinks" :key="link.title" :href="link.href">
                         {{ link.title }}
                     </a>
                 </div>

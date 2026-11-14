@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
-import AppLayout from '@/layouts/AppLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 import CategoriesSection from '@/components/landing/CategoriesSection.vue';
 import FeaturedToolsSection from '@/components/landing/FeaturedToolsSection.vue';
 import HeroSection from '@/components/landing/HeroSection.vue';
 import HowItWorksSection from '@/components/landing/HowItWorksSection.vue';
 import RecentlyAddedSection from '@/components/landing/RecentlyAddedSection.vue';
-import SiteFooter from '@/components/landing/SiteFooter.vue';
 import ToolsSection from '@/components/landing/ToolsSection.vue';
-import type { Tool, ToolCategory } from '@/types/landing';
+import { toolCategories } from '@/data/toolCategories';
+import type { Tool } from '@/types/landing';
 
 const popularTools: Tool[] = [
     {
@@ -116,17 +116,6 @@ const recentlyAddedTools: Tool[] = [
     },
 ];
 
-const categories: ToolCategory[] = [
-    { title: 'Text Tools', description: 'Write, count, and transform', icon: 'text', id: 'text-tools' },
-    { title: 'PDF Tools', description: 'Manage and edit documents', icon: 'file', id: 'pdf-tools' },
-    { title: 'Image Tools', description: 'Resize and convert images', icon: 'image', id: 'image-tools' },
-    { title: 'File Converter', description: 'Switch between file formats', icon: 'files', id: 'file-converter' },
-    { title: 'Video Tools', description: 'Work with video files', icon: 'video', id: 'video-tools' },
-    { title: 'Audio Tools', description: 'Convert and shape audio', icon: 'audio', id: 'audio-tools' },
-    { title: 'Developer Tools', description: 'Format and inspect code', icon: 'code', id: 'developer-tools' },
-    { title: 'Utilities', description: 'Small helpers for everyday tasks', icon: 'zap', id: 'utilities' },
-];
-
 const heroRef = ref<InstanceType<typeof HeroSection> | null>(null);
 const searchQuery = ref('');
 const activeSearchQuery = ref('');
@@ -157,17 +146,16 @@ function focusSearch(): void {
 </script>
 
 <template>
-    <AppLayout @search="focusSearch">
+    <MainLayout @search="focusSearch">
         <HeroSection
             ref="heroRef"
             v-model="searchQuery"
             @search="searchTools"
         />
         <ToolsSection :tools="filteredPopularTools" :search-query="activeSearchQuery" />
-        <CategoriesSection :categories="categories" />
+        <CategoriesSection :categories="toolCategories" />
         <FeaturedToolsSection :tools="featuredTools" />
         <RecentlyAddedSection :tools="recentlyAddedTools" />
         <HowItWorksSection />
-        <SiteFooter />
-    </AppLayout>
+    </MainLayout>
 </template>
