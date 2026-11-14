@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { toolCategories } from '@/data/toolCategories';
+import { useToolDirectoryStore } from '@/stores/toolDirectory';
 import BrandLogo from '@/components/landing/BrandLogo.vue';
 import TnIcon from '@/components/ui/TnIcon.vue';
 
+const directory = useToolDirectoryStore();
 const companyLinks = [
     { title: 'About ToolNest', href: '#about' },
     { title: 'How it works', href: '#how-it-works' },
@@ -33,7 +34,7 @@ const supportLinks = [
                 <div class="footer-link-column">
                     <h2>Explore</h2>
                     <a
-                        v-for="category in toolCategories"
+                        v-for="category in directory.categories"
                         :key="category.id"
                         :href="`#category-${category.id}`"
                     >

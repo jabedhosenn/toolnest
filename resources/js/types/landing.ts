@@ -24,10 +24,14 @@ export type IconName =
     | 'zap';
 
 export interface Tool {
+    id: number;
+    slug: string;
     title: string;
     description: string;
     category: string;
     icon: IconName;
+    routeName: string;
+    componentIdentifier: string;
     href?: string;
     label?: string;
 }
@@ -37,4 +41,5 @@ export interface ToolCategory {
     description: string;
     icon: IconName;
     id: string;
+    slug: string;
 }

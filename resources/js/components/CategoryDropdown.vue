@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, useId } from 'vue';
-import { toolCategories } from '@/data/toolCategories';
+import { computed, onBeforeUnmount, onMounted, ref, useId } from 'vue';
+import { useToolDirectoryStore } from '@/stores/toolDirectory';
 import TnIcon from '@/components/ui/TnIcon.vue';
 
 withDefaults(
@@ -19,6 +19,7 @@ const emit = defineEmits<{
 }>();
 
 const isOpen = ref(false);
+const toolCategories = computed(() => useToolDirectoryStore().categories);
 const dropdownRef = ref<HTMLElement | null>(null);
 const triggerRef = ref<HTMLButtonElement | null>(null);
 const panelId = useId();
