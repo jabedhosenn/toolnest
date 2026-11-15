@@ -15,6 +15,7 @@ class ToolController extends Controller
     {
         $filters = $request->validate([
             'category' => ['sometimes', 'string', 'max:255'],
+            'q' => ['sometimes', 'string', 'max:100'],
             'featured' => ['sometimes', 'in:true,false,1,0'],
             'popular' => ['sometimes', 'in:true,false,1,0'],
             'sort' => ['sometimes', 'in:sort_order,recent,name'],
@@ -26,6 +27,10 @@ class ToolController extends Controller
         if (isset($filters['category'])) {
             $query->whereHas('category', fn (Builder $categoryQuery): Builder => $categoryQuery
                 ->where('slug', $filters['category']));
+        }
+
+        if (isset($filters['q'])) {
+            $this->applySearch($query, $filters['q']);
         }
 
         foreach (['featured' => 'is_featured', 'popular' => 'is_popular'] as $filter => $column) {
@@ -82,19 +87,8 @@ class ToolController extends Controller
             'q' => ['required', 'string', 'max:100'],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
         ]);
-        $term = '%'.$filters['q'].'%';
 
-        $tools = $this->activeTools()
-            ->where(function (Builder $query) use ($term): void {
-                $query->where('name', 'like', $term)
-                    ->orWhere('slug', 'like', $term)
-                    ->orWhere('description', 'like', $term)
-                    ->orWhereHas('category', fn (Builder $categoryQuery): Builder => $categoryQuery
-                        ->where('name', 'like', $term))
-                    ->orWhereHas('tags', fn (Builder $tagQuery): Builder => $tagQuery
-                        ->where('name', 'like', $term)
-                        ->orWhere('slug', 'like', $term));
-            })
+        $tools = $this->applySearch($this->activeTools(), $filters['q'])
             ->orderBy('sort_order')
             ->orderBy('id')
             ->paginate($filters['per_page'] ?? 12);
@@ -108,6 +102,22 @@ class ToolController extends Controller
             ->active()
             ->whereHas('category', fn (Builder $query): Builder => $query->active())
             ->with(['category', 'tags']);
+    }
+
+    private function applySearch(Builder $query, string $search): Builder
+    {
+        $term = '%'.$search.'%';
+
+        return $query->where(function (Builder $searchQuery) use ($term): void {
+            $searchQuery->where('name', 'like', $term)
+                ->orWhere('slug', 'like', $term)
+                ->orWhere('description', 'like', $term)
+                ->orWhereHas('category', fn (Builder $categoryQuery): Builder => $categoryQuery
+                    ->where('name', 'like', $term))
+                ->orWhereHas('tags', fn (Builder $tagQuery): Builder => $tagQuery
+                    ->where('name', 'like', $term)
+                    ->orWhere('slug', 'like', $term));
+        });
     }
 
     private function validatedPerPage(Request $request): int

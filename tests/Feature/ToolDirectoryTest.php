@@ -76,6 +76,52 @@ class ToolDirectoryTest extends TestCase
             ->assertJsonPath('meta.last_page', 2);
     }
 
+    public function test_tools_endpoint_searches_names_descriptions_and_tags_with_category_sort_and_pagination(): void
+    {
+        $category = Category::factory()->create(['slug' => 'developer-tools']);
+        Tool::factory()->for($category)->create([
+            'name' => 'Markdown Reader',
+            'slug' => 'markdown-reader',
+            'description' => 'Read formatted content.',
+            'sort_order' => 3,
+        ]);
+        Tool::factory()->for($category)->create([
+            'name' => 'Zebra Notes',
+            'slug' => 'zebra-notes',
+            'description' => 'Organize markdown documents.',
+            'sort_order' => 2,
+        ]);
+        $taggedTool = Tool::factory()->for($category)->create([
+            'name' => 'Alpha Tool',
+            'slug' => 'alpha-tool',
+            'description' => 'A useful developer utility.',
+            'sort_order' => 1,
+        ]);
+        ToolTag::factory()->for($taggedTool)->create([
+            'name' => 'markdown',
+            'slug' => 'markdown',
+        ]);
+        $otherCategory = Category::factory()->create(['slug' => 'other-category']);
+        Tool::factory()->for($otherCategory)->create([
+            'name' => 'Markdown Outside Category',
+            'slug' => 'markdown-outside-category',
+        ]);
+
+        $this->getJson('/api/tools?q=markdown&category=developer-tools&sort=name&per_page=1')
+            ->assertOk()
+            ->assertJsonPath('data.0.slug', 'alpha-tool')
+            ->assertJsonPath('meta.total', 3)
+            ->assertJsonPath('meta.per_page', 1)
+            ->assertJsonPath('meta.last_page', 3);
+    }
+
+    public function test_tools_endpoint_rejects_search_queries_longer_than_100_characters(): void
+    {
+        $this->getJson('/api/tools?q='.str_repeat('a', 101))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['q']);
+    }
+
     public function test_tool_detail_endpoint_returns_the_tool_and_its_category(): void
     {
         $category = Category::factory()->create(['slug' => 'developer-tools']);
