@@ -55,6 +55,7 @@ export interface ToolDirectoryResource {
 
 export interface ToolListFilters {
     category?: string;
+    q?: string;
     featured?: boolean;
     popular?: boolean;
     sort?: 'sort_order' | 'recent' | 'name';

@@ -49,6 +49,7 @@ function toToolCategory(category: CategoryDirectoryResource): ToolCategory {
         icon: toIconName(category.icon),
         id: category.slug,
         slug: category.slug,
+        toolsCount: category.tools_count,
     };
 }
 

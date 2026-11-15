@@ -447,6 +447,243 @@
     padding-block: clamp(4rem, 7vw, 6.25rem);
 }
 
+.directory-page {
+    min-height: 65vh;
+}
+
+.directory-page .section-heading h1 {
+    margin: 0;
+    color: var(--tn-text);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 650;
+    letter-spacing: -0.055em;
+}
+
+.directory-category-heading {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+}
+
+.directory-category-icon {
+    display: inline-grid;
+    width: 3.75rem;
+    height: 3.75rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 1rem;
+    background: var(--tn-primary-light);
+    color: var(--tn-primary);
+}
+
+.directory-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    margin-block: 2rem;
+}
+
+.directory-search {
+    position: relative;
+    min-width: 0;
+}
+
+.directory-search-form {
+    display: flex;
+    min-height: 3.75rem;
+    align-items: center;
+    gap: 0.8rem;
+    padding-inline: 1.1rem;
+    border: 1px solid var(--tn-border);
+    border-radius: 0.9rem;
+    background: var(--tn-surface);
+    color: var(--tn-text-muted);
+    box-shadow: var(--tn-shadow-sm);
+}
+
+.directory-search-form:focus-within {
+    border-color: color-mix(in srgb, var(--tn-primary) 55%, var(--tn-border));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--tn-primary) 13%, transparent);
+}
+
+.directory-search-form input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--tn-text);
+    font: inherit;
+}
+
+.directory-search-form input::placeholder {
+    color: var(--tn-text-muted);
+}
+
+.directory-search-clear {
+    display: inline-grid;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--tn-text-muted);
+}
+
+.directory-search-clear:hover {
+    background: var(--tn-surface-hover);
+    color: var(--tn-text);
+}
+
+.directory-search-spinner {
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    border: 2px solid var(--tn-border);
+    border-top-color: var(--tn-primary);
+    border-radius: 50%;
+    animation: directory-spin 0.7s linear infinite;
+}
+
+@keyframes directory-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.directory-search-suggestions {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 0.4rem);
+    right: 0;
+    left: 0;
+    display: grid;
+    gap: 0.2rem;
+    margin: 0;
+    padding: 0.4rem;
+    border: 1px solid var(--tn-border);
+    border-radius: 0.8rem;
+    background: var(--tn-surface);
+    box-shadow: var(--tn-shadow-lg);
+    list-style: none;
+}
+
+.directory-search-suggestions button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.7rem 0.75rem;
+    border: 0;
+    border-radius: 0.55rem;
+    background: transparent;
+    color: var(--tn-text);
+    text-align: left;
+}
+
+.directory-search-suggestions button:hover,
+.directory-search-suggestions button:focus-visible {
+    background: var(--tn-surface-hover);
+}
+
+.directory-filters {
+    display: flex;
+    gap: 0.7rem;
+}
+
+.directory-filter {
+    position: relative;
+    display: flex;
+    min-height: 3.4rem;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--tn-border);
+    border-radius: 0.75rem;
+    background: var(--tn-surface);
+    color: var(--tn-text-muted);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.directory-filter select {
+    max-width: 12rem;
+    padding: 0.25rem 1.4rem 0.25rem 0;
+    border: 0;
+    appearance: none;
+    outline: 0;
+    background: transparent;
+    color: var(--tn-text);
+    font: inherit;
+    font-size: 0.84rem;
+    cursor: pointer;
+}
+
+.directory-filter > svg {
+    position: absolute;
+    right: 0.65rem;
+    pointer-events: none;
+}
+
+.directory-category-sort {
+    justify-self: end;
+}
+
+.directory-results-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 2rem 0 1rem;
+}
+
+.directory-results-heading h2 {
+    margin: 0;
+    color: var(--tn-text);
+    font-size: 1.25rem;
+    font-weight: 650;
+}
+
+.directory-results-heading > span {
+    color: var(--tn-text-muted);
+    font-size: 0.85rem;
+}
+
+.directory-message {
+    display: flex;
+    min-height: 12rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    color: var(--tn-text-muted);
+    text-align: center;
+}
+
+.directory-error {
+    color: var(--tn-danger);
+}
+
+.directory-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.directory-related {
+    margin-top: 4.5rem;
+    padding-top: 1rem;
+}
+
+.directory-related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
 .section-heading {
     max-width: 640px;
 }
@@ -601,18 +838,26 @@
 }
 
 .tool-card h3 {
+    display: -webkit-box;
+    overflow: hidden;
     margin: 0;
     color: var(--tn-text);
     font-size: 1.02rem;
     font-weight: 650;
     letter-spacing: -0.025em;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .tool-card p {
+    display: -webkit-box;
+    overflow: hidden;
     margin: 0.45rem 0 0;
     color: var(--tn-text-muted);
     font-size: 0.82rem;
     line-height: 1.6;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .tool-card-link {
@@ -927,6 +1172,23 @@
     .category-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .directory-controls {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .directory-filters {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .directory-filter {
+        justify-content: space-between;
+    }
+
+    .directory-filter select {
+        max-width: none;
+    }
 }
 
 @media (max-width: 800px) {
@@ -1117,6 +1379,32 @@
         align-items: flex-start;
         flex-direction: column;
         gap: 0.9rem;
+    }
+
+    .directory-category-heading {
+        align-items: flex-start;
+        gap: 0.85rem;
+    }
+
+    .directory-category-icon {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .directory-filters {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .directory-filter {
+        min-height: 3.25rem;
+    }
+
+    .directory-related-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .directory-results-heading {
+        align-items: flex-start;
     }
 
     .section-header-link,

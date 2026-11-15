@@ -86,10 +86,10 @@ onBeforeUnmount(() => {
                 </button>
                 <ThemeToggle />
                 <a class="login-link" href="/login">Log in</a>
-                <a class="tn-btn tn-btn-primary get-started-button" href="#popular-tools">
+                <RouterLink class="tn-btn tn-btn-primary get-started-button" :to="{ name: 'tools.index' }">
                     Get started
                     <TnIcon name="arrow-right" :size="16" />
-                </a>
+                </RouterLink>
             </div>
 
             <button

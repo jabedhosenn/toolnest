@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useId } from 'vue';
+import { RouterLink } from 'vue-router';
 import { useToolDirectoryStore } from '@/stores/toolDirectory';
 import TnIcon from '@/components/ui/TnIcon.vue';
 
@@ -91,11 +92,11 @@ onBeforeUnmount(() => {
             :class="{ 'category-dropdown-panel-mobile': variant === 'mobile' }"
             aria-label="Tool categories"
         >
-            <a
+            <RouterLink
                 v-for="category in toolCategories"
                 :key="category.id"
                 class="category-dropdown-item"
-                :href="`#category-${category.id}`"
+                :to="{ name: 'categories.show', params: { categorySlug: category.slug } }"
                 @click="selectCategory"
             >
                 <span class="category-dropdown-icon">
@@ -106,7 +107,7 @@ onBeforeUnmount(() => {
                     <span>{{ category.description }}</span>
                 </span>
                 <TnIcon name="arrow-up-right" :size="15" class="category-dropdown-arrow" />
-            </a>
+            </RouterLink>
         </div>
     </div>
 </template>

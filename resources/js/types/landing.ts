@@ -42,4 +42,5 @@ export interface ToolCategory {
     icon: IconName;
     id: string;
     slug: string;
+    toolsCount?: number;
 }

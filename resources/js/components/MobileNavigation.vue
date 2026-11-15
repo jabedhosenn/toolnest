@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue';
+import { RouterLink } from 'vue-router';
 import CategoryDropdown from '@/components/CategoryDropdown.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import TnIcon from '@/components/ui/TnIcon.vue';
@@ -16,10 +17,10 @@ const emit = defineEmits<{
 
 const panelRef = ref<HTMLElement | null>(null);
 const links = [
-    { title: 'Home', href: '#top', id: 'top' },
-    { title: 'All tools', href: '#popular-tools', id: 'popular-tools' },
-    { title: 'Pricing', href: '#pricing', id: 'pricing' },
-    { title: 'About', href: '#about', id: 'about' },
+    { title: 'Home', to: { name: 'home' }, id: 'top' },
+    { title: 'All tools', to: { name: 'tools.index' }, id: 'popular-tools' },
+    { title: 'Pricing', to: { name: 'home', hash: '#pricing' }, id: 'pricing' },
+    { title: 'About', to: { name: 'home', hash: '#about' }, id: 'about' },
 ];
 
 function handleKeydown(event: KeyboardEvent): void {
@@ -54,34 +55,22 @@ watch(
         aria-label="Mobile navigation"
         @keydown="handleKeydown"
     >
-        <a
-            v-for="link in links.slice(0, 2)"
+        <RouterLink
+            v-for="link in links"
             :key="link.id"
             class="mobile-nav-link"
             :class="{ 'nav-link-active': activeSection === link.id }"
-            :href="link.href"
+            :to="link.to"
             :aria-current="activeSection === link.id ? 'location' : undefined"
             @click="emit('close', false)"
         >
             {{ link.title }}
-        </a>
+        </RouterLink>
         <CategoryDropdown
             variant="mobile"
             :active="activeSection === 'categories'"
             @select="emit('close', false)"
         />
-        <a
-            v-for="link in links.slice(2)"
-            :key="link.id"
-            class="mobile-nav-link"
-            :class="{ 'nav-link-active': activeSection === link.id }"
-            :href="link.href"
-            :aria-current="activeSection === link.id ? 'location' : undefined"
-            @click="emit('close', false)"
-        >
-            {{ link.title }}
-        </a>
-
         <div class="mobile-navigation-actions">
             <button
                 class="icon-button mobile-navigation-icon"
@@ -95,10 +84,14 @@ watch(
             <a class="tn-btn tn-btn-secondary" href="/login" @click="emit('close', false)">
                 Log in
             </a>
-            <a class="tn-btn tn-btn-primary" href="#popular-tools" @click="emit('close', false)">
+            <RouterLink
+                class="tn-btn tn-btn-primary"
+                :to="{ name: 'tools.index' }"
+                @click="emit('close', false)"
+            >
                 Get started
                 <TnIcon name="arrow-right" :size="16" />
-            </a>
+            </RouterLink>
         </div>
     </nav>
 </template>
